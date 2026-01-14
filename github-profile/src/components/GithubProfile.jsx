@@ -1,13 +1,6 @@
 import { useState } from "react";
 
 export default function GithubProfile(){
-    /*
-        div{
-            display: flex;
-            flex-direction: column
-            align-items:center;     
-        }
-    */
 
     const [username, setUserName] =useState("Samm24TT")
     const [error, setError] = useState("")
@@ -32,50 +25,83 @@ export default function GithubProfile(){
     }
 
     return(
-        <>
-            <div className="min-h-screen bg-gray-200 flex flex-col items-center p-6">
-                <header>
-                    <h1 className="font-bold text-3xl mb-6">GitHub Profile Explore</h1>
-                    <div className="flex shadow rounded">
-                        <input 
-                            type="text" 
-                            value={username}
-                            onChange={(e)=>setUserName(e.target.value)}
-                            className="px-4 py-3 flex-1" placeholder="Enter Github Username..."/> 
-                        
-                        <button 
-                            className="bg-black text-white px-6 font-semibold hover:bg-blue-800 "
-                            onClick={()=>fetchProfile(username)}
-                        >Search</button>
+        <div className="min-h-screen bg-white flex item-center justify-center p-6">
+            <div className="w-full max-w-4xl bg-gray-600 rounded-xl shawdow-2xl border border-[#333]" p-8>
+                {/* Header */}
+                <h1 className="text-3xl text-center mb-8 font-bold text-[#4fc1ff]">Github profile Explorer</h1>
+
+                {/* Search */}
+                <div className="bg-[#1e1e1e] flex flex-col sm:flex-row max-w-xl mx-auto rounded-lg overflow-hidden border border-[#333]">
+                    <input 
+                    type="text"
+                    value={username}
+                    className="flex-1 px-4 py-3 text-center bg-transparent text-[#d4d4d4] outline-none placeholder-[#6a9955]"
+                    placeholder="Enter github username" 
+                    onChange={(e) => setUsername(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && fetchProfile(username)}/>
+                    <button
+                    onClick={() => fetchProfile(username)}
+                    className="bg-[#007acc] text-white px-10 py-2 font-semibold hover:bg-[#0e33ff] transition">Search</button>
+                </div>
+
+                {/* Profile */}
+                {user && (
+                <div className="mt-10 bg-[#1e1e1e] border border-[#333] rounded-xl p-8">
+
+                    <div className="flex flex-col md:flex-row gap-8 items-center">
+                        <img
+                        src={user.avatar_url}
+                        className="w-32 h-32 rounded-full ring-2 ring-[#007acc]"
+                        />
+
+                        <div className="text-center md:text-left flex-1">
+                            <h2
+                            className="text-2xl font-bold text-[#4fc1ff] cursor-pointer hover:underline"
+                            onClick={() =>
+                                window.open(`https://github.com/${user.login}`, "_blank")
+                            }
+                            >
+                            @{user.login}
+                            </h2>
+
+                            <p className="text-[#9cdcfe]">{user.name}</p>
+
+                            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4 mt-6">
+                                <Stat label="Followers" value={user.followers} />
+                                <Stat label="Following" value={user.following} />
+                                <Stat label="Repos" value={user.public_repos} />
+                                <Stat label="Gists" value={user.public_gists} />
+                            </div>
+                        </div>
                     </div>
-                </header>
-                <main>
-                 {user && <section className="max-w-3xl w-full bg-white rounded shadow p-8 mt-6">
-         
-                  <img src={user.avatar_url} alt="avatar" className="w-40 h-40 rounded-full border" />
-                  <h2 className="text-2xl font-bold cursor-pointer hover:underline" onClick={()=>window.open(`${user.html_url}`, "_blank")}>@{user.login}</h2>
-                  <h2>{user.name}</h2>
 
-                  <div className="flex flex-wrap gap-6 text-sm">
-                    <Stat value={user.followers} label="Followers" />
-                    <Stat value={user.following} label="Following" />
-                    <Stat value={user.public_repos} label="repos" />
-                    <Stat value={user.following} label="Following" />
-                    
+       
+                </div>
+                )}
 
-                  </div>
-                 </section> }
-                </main>
+                
+                
             </div>
-        </>
+        </div>
     )
 }
 
-function Stat({value,label}) {
+// function Stat({value,label}) {
+//   return (
+//     <div>
+//       <span className="text-blue-500">{value} </span> 
+//       <span className="text-gray-500">{label}</span>
+//     </div>
+//   )
+// }
+
+function Stat({ label, value }) {
   return (
-    <div>
-      <span className="text-blue-500">{value} </span> 
-      <span className="text-gray-500">{label}</span>
+    <div className=" rounded-lg p-3 text-center">
+    <div className="text-lg font-bold text-[#4fc1ff]">
+      {value}
     </div>
-  )
-}
+    <div className="text-xs text-[#9cdcfe]">{label}</div>
+    </div>
+  );
+  }
