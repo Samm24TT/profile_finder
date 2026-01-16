@@ -2,11 +2,16 @@ import { useState } from "react";
 
 export default function GithubProfile(){
 
-    const [username, setUserName] =useState("Samm24TT")
+    const [username, setUsername] =useState("")
     const [error, setError] = useState("")
-    const [user,setUser]    = useState(null)  //username = "ferhatgnits" , setUserName(e.target.value)
-// user = null, setUser()
+    const [user,setUser]    = useState(null)  
     async function fetchProfile(name) {
+        if(!name.trim()) {
+            setError("Please, you must enter a username!")
+        } else {
+            setError("enter correct username")
+            return
+        }
         try{
             //fetch(url/api)
             const res = await fetch(`https://api.github.com/users/${name}`) 
@@ -43,6 +48,8 @@ export default function GithubProfile(){
                     onClick={() => fetchProfile(username)}
                     className="bg-[#007acc] text-white px-10 py-2 font-semibold hover:bg-[#0e33ff] transition">Search</button>
                 </div>
+
+                <h2 className="font-semibold text-2xl text-center mt-8">{error}</h2>
 
                 {/* Profile */}
                 {user && (
@@ -85,15 +92,6 @@ export default function GithubProfile(){
         </div>
     )
 }
-
-// function Stat({value,label}) {
-//   return (
-//     <div>
-//       <span className="text-blue-500">{value} </span> 
-//       <span className="text-gray-500">{label}</span>
-//     </div>
-//   )
-// }
 
 function Stat({ label, value }) {
   return (
